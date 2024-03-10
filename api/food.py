@@ -136,7 +136,7 @@ def remove_entry_from_user_catalogue(food_id: int, user_id=Depends(auth_handler.
 
 
 @router.get('/stats/{date_iso}', tags=['Food -> Diary'])
-def get_stats(date_iso: str, user_id=Depends(auth_handler.auth_wrapper)):
-    # res = db_get_users_cached_stats(user_id)
-    # sleep(2)
-    return
+def get_stats(date_iso: str, background_tasks: BackgroundTasks, user_id=Depends(auth_handler.auth_wrapper)):
+    coefficients = get_coefficients(user_id)
+    stats = get_cached_stats(background_tasks, user_id, date_iso, coefficients)
+    return {'stats': stats}

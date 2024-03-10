@@ -17,13 +17,12 @@ def get_cached_stats(background_tasks: BackgroundTasks, user_id, date_iso, coeff
         return stats
 
     stats_date = res['up_to_date']
-    if date_iso <= stats_date:
-        # background_tasks.add_task(save_new_stats, user_id, date_iso, coefficients)  # for debug purposes
-        return json.loads(res['stats'])
-
     if date_iso > stats_date:
         background_tasks.add_task(save_new_stats, user_id, date_iso, coefficients)
-        return json.loads(res['stats'])
+
+    # background_tasks.add_task(save_new_stats, user_id, date_iso, coefficients)  # for debug purposes
+
+    return json.loads(res['stats'])
 
 
 def save_new_stats(user_id, date_iso, coefficients):
